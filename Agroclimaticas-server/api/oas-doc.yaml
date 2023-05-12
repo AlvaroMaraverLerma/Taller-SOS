@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Agroclimaticas API
+  description: Taller SOS 
+
+paths:
+  /api/v1/provincias:
+    x-router-controller: agroclimaticasController
+    get:
+      description: Returns all provincias
+      operationId: getProvincias
+      responses:
+        200:
+          description: Provincia list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/provincia'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/v1/provincias/{province}:
+    x-router-controller: agroclimaticasController
+    get:
+      description: Returns a single provincia by its province
+      operationId: findByprovince
+      parameters:
+        - required: true
+          name: province
+          description: province of the provincia to fetch
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: Provincia found by province
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/provincia'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+
+components:
+  schemas:
+    provincia:
+        type: object
+        required:
+          - province
+        properties:
+          province:
+            type: string
+          year:
+            type: number
+          maximun_temperature:
+            type: number
+          minimun_temperature:
+            type: number
+          medium_temperature:
+            type: number
+    error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+      additionalProperties: true
